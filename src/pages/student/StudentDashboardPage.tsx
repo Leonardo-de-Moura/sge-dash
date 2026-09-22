@@ -85,7 +85,7 @@ export const StudentDashboardPage: React.FC = () => {
 
   const handleDownloadCert = async (cert: CertificateItem) => {
     try {
-      await certificatesApi.downloadCertificatePdf(cert.id, `Certificado-${cert.code}.pdf`);
+      await certificatesApi.downloadCertificatePdf(cert.id, `Certificado-${cert.validationCode}.pdf`);
     } catch (err: any) {
       setErrorMessage(err.message || 'Erro ao baixar certificado.');
       setTimeout(() => setErrorMessage(null), 3500);

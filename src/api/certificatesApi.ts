@@ -3,7 +3,7 @@ import { CertificateItem } from '../types';
 
 export interface ValidatedCertificate {
   valid: boolean;
-  code: string;
+  validationCode: string;
   participantName: string;
   eventTitle: string;
   workload: string;

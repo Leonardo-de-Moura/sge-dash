@@ -35,8 +35,8 @@ export const StudentCertificatesPage: React.FC = () => {
   const handleDownload = async (cert: CertificateItem) => {
     try {
       setDownloadingId(cert.id);
-      await certificatesApi.downloadCertificatePdf(cert.id, `Certificado-${cert.code}.pdf`);
-      setToastMessage(`Download iniciado para o certificado "${cert.code}"!`);
+      await certificatesApi.downloadCertificatePdf(cert.id, `Certificado-${cert.validationCode}.pdf`);
+      setToastMessage(`Download iniciado para o certificado "${cert.validationCode}"!`);
       setTimeout(() => setToastMessage(null), 3500);
     } catch (err: any) {
       setErrorMessage(err.message || 'Não foi possível baixar o certificado.');
@@ -155,7 +155,7 @@ export const StudentCertificatesPage: React.FC = () => {
                       Válido
                     </span>
                     <span className="text-[11px] font-mono text-gray-400">
-                      {cert.code}
+                      {cert.validationCode}
                     </span>
                   </div>
 

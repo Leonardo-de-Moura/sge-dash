@@ -61,6 +61,6 @@ export interface CertificateItem {
   eventTitle: string;
   issueDate: string;
   workload: string;
-  code: string;
+  validationCode: string;
   participantName: string;
 }

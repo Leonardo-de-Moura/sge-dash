@@ -27,6 +27,7 @@ export interface RegisterStudentRequest {
   email: string;
   matricula: string;
   password: string;
+  confirmPassword: string;
 }
 
 export interface RegisterTeacherRequest {
@@ -34,6 +35,7 @@ export interface RegisterTeacherRequest {
   email: string;
   siape: string;
   password: string;
+  confirmPassword: string;
 }
 
 export const authApi = {

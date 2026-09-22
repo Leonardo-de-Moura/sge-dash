@@ -41,6 +41,7 @@ export const RegisterStudentPage: React.FC = () => {
         email: email.trim(),
         matricula: matricula.trim(),
         password,
+        confirmPassword,
       });
 
       // Auto login with new credentials

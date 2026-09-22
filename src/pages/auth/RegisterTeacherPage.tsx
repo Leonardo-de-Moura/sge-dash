@@ -41,6 +41,7 @@ export const RegisterTeacherPage: React.FC = () => {
         email: email.trim(),
         siape: siape.trim(),
         password,
+        confirmPassword,
       });
 
       // Auto login with new credentials
