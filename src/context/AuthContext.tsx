@@ -101,7 +101,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const defaultEmail =
           savedRole === 'professor'
             ? 'ricardo.silva@ifce.edu.br'
-            : 'luzia@aluno.ifce.edu.br';
+            : 'luzia.fernandes@aluno.ifce.edu.br';
         const res = await authApi.login({
           email: defaultEmail,
           password: '123456',
@@ -146,7 +146,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = useCallback(async (newRole: UserRole, _customName?: string, customEmail?: string) => {
     const emailToUse =
       customEmail ||
-      (newRole === 'professor' ? 'ricardo.silva@ifce.edu.br' : 'luzia@aluno.ifce.edu.br');
+      (newRole === 'professor' ? 'ricardo.silva@ifce.edu.br' : 'luzia.fernandes@aluno.ifce.edu.br');
     await loginWithCredentials(emailToUse, '123456');
   }, [loginWithCredentials]);
 
@@ -156,7 +156,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Switch login account according to role to keep backend context valid
     try {
       const emailToUse =
-        newRole === 'professor' ? 'ricardo.silva@ifce.edu.br' : 'luzia@aluno.ifce.edu.br';
+        newRole === 'professor' ? 'ricardo.silva@ifce.edu.br' : 'luzia.fernandes@aluno.ifce.edu.br';
       await loginWithCredentials(emailToUse, '123456');
     } catch (e) {
       console.warn('Erro ao alternar papel:', e);
