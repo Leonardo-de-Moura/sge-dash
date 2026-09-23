@@ -9,7 +9,11 @@ export class ApiError extends Error {
   errors: string[];
   statusCode: number;
 
-  constructor(message: string, errors: string[] = [], statusCode: number = 400) {
+  constructor(
+    message: string,
+    errors: string[] = [],
+    statusCode: number = 400
+  ) {
     super(message);
     this.name = 'ApiError';
     this.errors = errors;
@@ -17,7 +21,9 @@ export class ApiError extends Error {
   }
 }
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
+const API_BASE_URL = (
+  import.meta.env.VITE_BASE_URL || 'http://localhost:5000/api'
+).replace(/\/$/, '');
 
 export async function apiRequest<T>(
   endpoint: string,
