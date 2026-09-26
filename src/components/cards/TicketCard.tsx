@@ -1,5 +1,5 @@
 import React from 'react';
-import { CalendarDays, Clock, MapPin, CheckCircle2, Barcode } from 'lucide-react';
+import { CalendarDays, Clock, MapPin, CheckCircle2 } from 'lucide-react';
 
 export interface TicketData {
   id: string;
@@ -42,7 +42,6 @@ export const TicketCard: React.FC<TicketCardProps> = ({
     time,
     location,
     statusLabel = 'Inscrição confirmada',
-    ticketNumber = '0000',
   } = ticket;
 
   return (
@@ -145,15 +144,6 @@ export const TicketCard: React.FC<TicketCardProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 h-full flex-shrink-0">
-          <Barcode className="w-5 sm:w-6 h-16 sm:h-20 text-white" strokeWidth={1.25} />
-          <span
-            className="text-[8px] sm:text-[9px] font-bold tracking-widest text-emerald-50/90 whitespace-nowrap"
-            style={{ writingMode: 'vertical-rl' }}
-          >
-            INGRESSO Nº {ticketNumber}
-          </span>
-        </div>
       </div>
     </div>
   );

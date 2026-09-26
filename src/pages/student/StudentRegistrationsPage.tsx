@@ -139,10 +139,6 @@ export const StudentRegistrationsPage: React.FC = () => {
                       >
                         Inscrição {reg.status}
                       </span>
-                      <span className="text-xs text-gray-500">
-                        Código:{' '}
-                        <strong className="font-mono text-gray-800">{reg.ticketCode}</strong>
-                      </span>
                     </div>
 
                     <h3 className="text-base sm:text-lg font-bold text-gray-900">

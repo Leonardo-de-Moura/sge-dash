@@ -85,7 +85,7 @@ export const StudentDashboardPage: React.FC = () => {
 
   const handleDownloadCert = async (cert: CertificateItem) => {
     try {
-      await certificatesApi.downloadCertificatePdf(cert.id, `Certificado-${cert.validationCode}.pdf`);
+      await certificatesApi.downloadCertificatePdf(cert.id, 'Certificado.pdf');
     } catch (err: any) {
       setErrorMessage(err.message || 'Erro ao baixar certificado.');
       setTimeout(() => setErrorMessage(null), 3500);
@@ -241,9 +241,6 @@ export const StudentDashboardPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#C9EEB4] text-[#004D26] uppercase">
                       {reg.status}
-                    </span>
-                    <span className="text-[10px] font-mono text-gray-400">
-                      {reg.ticketCode}
                     </span>
                   </div>
                   <h5 className="text-xs font-bold text-gray-900 mt-2 line-clamp-2">
