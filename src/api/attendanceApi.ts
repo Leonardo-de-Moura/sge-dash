@@ -22,7 +22,7 @@ export const attendanceApi = {
   ): Promise<void> => {
     return apiRequest<void>('/attendance/bulk', {
       method: 'POST',
-      body: JSON.stringify({ attendances }),
+      body: JSON.stringify({ eventId, attendances }),
     });
   },
 };

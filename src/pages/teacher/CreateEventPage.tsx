@@ -38,8 +38,21 @@ export const CreateEventPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !description.trim()) {
+    if (isSubmitting || savedToast) return;
+
+    const parsedTotalSlots = Number(totalSlots);
+    if (!title.trim() || !description.trim() || !startDate || !workload.trim() || !location.trim()) {
       setErrorMessage('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    if (endDate && endDate < startDate) {
+      setErrorMessage('A data de término não pode ser anterior à data de início.');
+      return;
+    }
+
+    if (!Number.isInteger(parsedTotalSlots) || parsedTotalSlots < 1) {
+      setErrorMessage('Informe ao menos uma vaga para o evento.');
       return;
     }
 
@@ -54,12 +67,12 @@ export const CreateEventPage: React.FC = () => {
         category,
         modality,
         description: description.trim(),
-        startDate: startDate || new Date().toISOString().split('T')[0],
+        startDate,
         endDate: endDate || undefined,
         dayMonth: computedDayMonth,
         workload,
         location,
-        totalSlots: parseInt(totalSlots, 10) || 50,
+        totalSlots: parsedTotalSlots,
       });
 
       setSavedToast(true);
@@ -185,6 +198,7 @@ export const CreateEventPage: React.FC = () => {
             <Input
               label="Data de término"
               type="date"
+              min={startDate || undefined}
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
             />
@@ -290,7 +304,7 @@ export const CreateEventPage: React.FC = () => {
                 variant="outline"
                 size="md"
                 fullWidth
-                disabled={isSubmitting}
+                disabled={isSubmitting || savedToast}
                 onClick={() => navigate('/professor/inicio')}
               >
                 Cancelar
@@ -300,7 +314,7 @@ export const CreateEventPage: React.FC = () => {
                 variant="primary"
                 size="md"
                 fullWidth
-                disabled={isSubmitting}
+                disabled={isSubmitting || savedToast}
               >
                 {isSubmitting ? (
                   <span className="flex items-center justify-center gap-2">

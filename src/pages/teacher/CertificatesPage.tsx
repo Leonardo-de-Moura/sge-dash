@@ -82,7 +82,14 @@ export const CertificatesPage: React.FC = () => {
   const handleEmitSingle = async (p: ParticipantAttendance) => {
     try {
       setProcessingId(p.id);
-      await certificatesApi.issueCertificates(selectedEventId, [p.id]);
+      const result = await certificatesApi.issueCertificates(selectedEventId, [p.id]);
+
+      if (result.totalIssued === 0) {
+        await loadParticipants(selectedEventId);
+        setErrorMessage('Nenhum certificado foi emitido. Atualize a lista e confira a presença do participante.');
+        setTimeout(() => setErrorMessage(null), 4000);
+        return;
+      }
 
       setParticipants((prev) =>
         prev.map((item) => (item.id === p.id ? { ...item, certificateIssued: true } : item))

@@ -77,7 +77,8 @@ export const AttendancePage: React.FC = () => {
   );
 
   const presentCount = participants.filter((p) => p.status === 'presente').length;
-  const absentCount = participants.filter((p) => p.status === 'ausente' || !p.status).length;
+  const absentCount = participants.filter((p) => p.status === 'ausente').length;
+  const pendingCount = participants.filter((p) => p.status === 'pendente').length;
   const totalCount = participants.length;
 
   const toggleStatus = (id: string, newStatus: 'presente' | 'ausente') => {
@@ -95,7 +96,7 @@ export const AttendancePage: React.FC = () => {
         selectedEventId,
         participants.map((p) => ({
           id: p.id,
-          status: p.status || 'ausente',
+          status: p.status,
         }))
       );
 
@@ -161,7 +162,7 @@ export const AttendancePage: React.FC = () => {
           </div>
 
           {/* Quick Counter Badges matching Figma */}
-          <div className="flex items-center gap-2 sm:gap-3 w-full md:w-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-4 items-center gap-2 sm:gap-3 w-full md:w-auto">
             <div className="flex-1 md:flex-initial px-3.5 py-2 rounded-xl bg-gray-50 border border-gray-100 text-center">
               <span className="text-[10px] uppercase font-bold text-gray-400 block">
                 Inscritos
@@ -185,6 +186,12 @@ export const AttendancePage: React.FC = () => {
               <span className="text-sm font-bold text-[#A62B26]">
                 {absentCount}
               </span>
+            </div>
+            <div className="flex-1 md:flex-initial px-3.5 py-2 rounded-xl bg-amber-50 border border-amber-100 text-center">
+              <span className="text-[10px] uppercase font-bold text-amber-700 block">
+                Pendentes
+              </span>
+              <span className="text-sm font-bold text-amber-700">{pendingCount}</span>
             </div>
           </div>
         </div>
@@ -227,6 +234,7 @@ export const AttendancePage: React.FC = () => {
             <div className="divide-y divide-gray-100">
               {filteredParticipants.map((p) => {
                 const isPresent = p.status === 'presente';
+                  const isAbsent = p.status === 'ausente';
 
                 return (
                   <div
@@ -272,7 +280,7 @@ export const AttendancePage: React.FC = () => {
                         type="button"
                         onClick={() => toggleStatus(p.id, 'ausente')}
                         className={`px-3 py-1.5 rounded-xl text-xs font-bold inline-flex items-center gap-1.5 transition-all cursor-pointer ${
-                          !isPresent
+                          isAbsent
                             ? 'bg-[#A62B26] text-white shadow-2xs'
                             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                         }`}
