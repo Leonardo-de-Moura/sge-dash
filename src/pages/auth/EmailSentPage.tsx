@@ -8,7 +8,6 @@ export const EmailSentPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const email = (location.state as { email?: string })?.email || 'seu e-mail institucional';
-
   return (
     <AuthLayout>
       <div className="text-center py-2">

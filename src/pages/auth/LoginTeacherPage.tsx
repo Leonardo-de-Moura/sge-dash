@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, BookOpen, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Mail, Lock, BookOpen, Eye, EyeOff, AlertCircle, ArrowLeft } from 'lucide-react';
 import { AuthLayout } from '../../components/layout/AuthLayout';
 import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
@@ -35,6 +35,16 @@ export const LoginTeacherPage: React.FC = () => {
 
   return (
     <AuthLayout>
+      <div className="mb-4">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006A38]"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Voltar ao início
+        </Link>
+      </div>
+
       <div className="text-center mb-6">
         <a href="" className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#C9EEB4]/40 text-[#006A38] mb-3">
           <BookOpen className="w-6 h-6" />

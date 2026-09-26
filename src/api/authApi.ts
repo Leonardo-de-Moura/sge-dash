@@ -70,4 +70,5 @@ export const authApi = {
       body: JSON.stringify({ email }),
     });
   },
+
 };
