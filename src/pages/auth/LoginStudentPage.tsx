@@ -10,7 +10,7 @@ export const LoginStudentPage: React.FC = () => {
   const navigate = useNavigate();
   const { loginWithCredentials } = useAuth();
 
-  const [email, setEmail] = useState('luzia@aluno.ifce.edu.br');
+  const [email, setEmail] = useState('luzia.fernandes@aluno.ifce.edu.br');
   const [password, setPassword] = useState('123456');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);

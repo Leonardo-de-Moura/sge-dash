@@ -26,7 +26,7 @@ export const StudentRegistrationsPage: React.FC = () => {
         registrationsApi.getMyRegistrations(),
         eventsApi.getEvents().catch(() => []),
       ]);
-      setRegistrations(regs);
+      setRegistrations(regs.filter((registration) => registration.status !== 'cancelado'));
 
       const map: Record<string, EventItem> = {};
       evts.forEach((e) => {
@@ -49,9 +49,7 @@ export const StudentRegistrationsPage: React.FC = () => {
     try {
       setProcessingCancel(true);
       await registrationsApi.cancelRegistration(id);
-      setRegistrations((prev) =>
-        prev.map((r) => (r.id === id ? { ...r, status: 'cancelado' } : r))
-      );
+      setRegistrations((prev) => prev.filter((registration) => registration.id !== id));
       setToastMessage('Inscrição cancelada com sucesso.');
       setTimeout(() => setToastMessage(null), 3500);
       setCancelingId(null);

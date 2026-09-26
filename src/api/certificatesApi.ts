@@ -1,4 +1,4 @@
-import { apiRequest } from './client';
+import { API_BASE_URL, apiRequest } from './client';
 import { CertificateItem } from '../types';
 
 export interface ValidatedCertificate {
@@ -37,15 +37,18 @@ export const certificatesApi = {
 
   downloadCertificatePdf: async (certificateId: string, filename?: string): Promise<void> => {
     const token = localStorage.getItem('sge_token');
-    const baseUrl = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
-    const response = await fetch(`${baseUrl}/certificates/${certificateId}/download`, {
+    const response = await fetch(`${API_BASE_URL}/certificates/${encodeURIComponent(certificateId)}/download`, {
       headers: {
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
     });
 
     if (!response.ok) {
-      throw new Error('Falha ao baixar o certificado em PDF.');
+      throw new Error(`Falha ao baixar o certificado em PDF (HTTP ${response.status}).`);
+    }
+
+    if (!response.headers.get('content-type')?.includes('application/pdf')) {
+      throw new Error('O servidor não retornou um arquivo PDF válido.');
     }
 
     const blob = await response.blob();

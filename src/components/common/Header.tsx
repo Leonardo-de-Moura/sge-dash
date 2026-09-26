@@ -1,5 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Bell,
   ChevronDown,
@@ -22,6 +23,7 @@ export const Header: React.FC<HeaderProps> = ({
   subtitle,
 }) => {
   const { user, role, setRole, logout } = useAuth();
+  const navigate = useNavigate();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showNotificationToast, setShowNotificationToast] = useState(false);
@@ -231,18 +233,23 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
 
               <div className="py-1">
-                <a
-                  href=""
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate(role === 'professor' ? '/professor/perfil' : '/aluno/perfil');
+                    setShowDropdown(false);
+                  }}
                   className="flex items-center gap-2 px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   <UserCircle className="w-4 h-4 text-gray-400" />
                   Meu Perfil
-                </a>
+                </button>
 
                 <button
                   type="button"
                   onClick={() => {
                     logout();
+                    navigate(role === 'professor' ? '/login/professor' : '/login/aluno');
                     setShowDropdown(false);
                   }}
                   className="w-full flex items-center gap-2 px-4 py-2 text-xs text-[#A62B26] hover:bg-red-50 transition-colors text-left"

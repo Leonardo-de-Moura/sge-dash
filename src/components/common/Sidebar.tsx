@@ -30,7 +30,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate(role === "professor" ? "/login/professor" : "/login/aluno");
     if (onClose) onClose();
   };
 
