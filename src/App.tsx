@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 
 
 // Páginas de Autenticação
+import { SplashPage } from './pages/auth/SplashPage';
 import { LandingPage } from './pages/auth/LandingPage';
 import { RoleSelectionPage } from './pages/auth/RoleSelectionPage';
 import { LoginStudentPage } from './pages/auth/LoginStudentPage';
@@ -39,7 +40,8 @@ export default function App() {
         <div className="min-h-screen bg-[#F8F9FA] text-[#1A1A1A] font-sans antialiased">
           <Routes>
             {/* Fluxo de Entrada e Autenticação */}
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<SplashPage />} />
+            <Route path="/bem-vindo" element={<LandingPage />} />
             <Route path="/definir-funcao" element={<RoleSelectionPage />} />
             <Route path="/login/aluno" element={<LoginStudentPage />} />
             <Route path="/login/professor" element={<LoginTeacherPage />} />
