@@ -37,7 +37,7 @@ export const LoginStudentPage: React.FC = () => {
     <AuthLayout>
       <div className="mb-4">
         <Link
-          to="/"
+          to="/bem-vindo"
           className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006A38]"
         >
           <ArrowLeft className="h-4 w-4" />

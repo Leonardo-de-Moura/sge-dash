@@ -26,6 +26,8 @@ export interface EventItem {
   modality: 'Presencial' | 'Online' | 'Híbrido';
   startDate: string;
   endDate?: string;
+  startTime?: string;
+  endTime?: string;
   workload: string;
   location: string;
   totalSlots: number;

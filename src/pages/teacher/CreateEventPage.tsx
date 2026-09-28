@@ -29,6 +29,8 @@ export const CreateEventPage: React.FC = () => {
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [startTime, setStartTime] = useState('08:00');
+  const [endTime, setEndTime] = useState('12:00');
   const [workload, setWorkload] = useState('4 horas');
   const [location, setLocation] = useState('Auditório Principal - Campus Cedro');
   const [totalSlots, setTotalSlots] = useState('50');
@@ -41,13 +43,19 @@ export const CreateEventPage: React.FC = () => {
     if (isSubmitting || savedToast) return;
 
     const parsedTotalSlots = Number(totalSlots);
-    if (!title.trim() || !description.trim() || !startDate || !workload.trim() || !location.trim()) {
+    if (!title.trim() || !description.trim() || !startDate || !startTime || !endTime || !workload.trim() || !location.trim()) {
       setErrorMessage('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
-    if (endDate && endDate < startDate) {
+    const effectiveEndDate = endDate || startDate;
+    if (effectiveEndDate < startDate) {
       setErrorMessage('A data de término não pode ser anterior à data de início.');
+      return;
+    }
+
+    if (effectiveEndDate === startDate && endTime <= startTime) {
+      setErrorMessage('O horário de término deve ser posterior ao horário de início.');
       return;
     }
 
@@ -61,14 +69,16 @@ export const CreateEventPage: React.FC = () => {
       setErrorMessage(null);
 
       const computedDayMonth = formatDayMonth(startDate);
+      const startDateTime = new Date(`${startDate}T${startTime}:00`).toISOString();
+      const endDateTime = new Date(`${effectiveEndDate}T${endTime}:00`).toISOString();
 
       await eventsApi.createEvent({
         title: title.trim(),
         category,
         modality,
         description: description.trim(),
-        startDate,
-        endDate: endDate || undefined,
+        startDate: startDateTime,
+        endDate: endDateTime,
         dayMonth: computedDayMonth,
         workload,
         location,
@@ -81,7 +91,9 @@ export const CreateEventPage: React.FC = () => {
       }, 1500);
     } catch (err: any) {
       console.error('Erro ao cadastrar evento:', err);
-      setErrorMessage(err.message || 'Falha ao cadastrar evento no banco de dados.');
+      setErrorMessage(err.statusCode === 409
+        ? `Não foi possível criar o evento. ${err.errors?.[0] || err.message}`
+        : err.message || 'Falha ao cadastrar evento no banco de dados.');
     } finally {
       setIsSubmitting(false);
     }
@@ -100,9 +112,9 @@ export const CreateEventPage: React.FC = () => {
       )}
 
       {errorMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-red-700 text-white px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 text-sm font-semibold">
+        <div role="alert" className="fixed bottom-6 right-6 z-50 max-w-[calc(100vw-3rem)] sm:max-w-md bg-red-700 text-white px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 text-sm font-semibold">
           <AlertCircle className="w-5 h-5 text-red-200" />
-          <span>{errorMessage}</span>
+          <span className="break-words">{errorMessage}</span>
         </div>
       )}
 
@@ -196,11 +208,26 @@ export const CreateEventPage: React.FC = () => {
               onChange={(e) => setStartDate(e.target.value)}
             />
             <Input
-              label="Data de término"
+              label="Horário de início"
+              type="time"
+              required
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+            />
+            <Input
+              label="Data de término (opcional)"
               type="date"
               min={startDate || undefined}
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
+            />
+            <Input
+              label="Horário de término"
+              type="time"
+              required
+              min={(!endDate || endDate === startDate) ? startTime : undefined}
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
             />
           </div>
 
@@ -288,7 +315,7 @@ export const CreateEventPage: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-3.5 h-3.5 text-[#006A38]" />
-                  <span>{workload}</span>
+                  <span>{startTime} às {endTime} • {workload}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-3.5 h-3.5 text-[#006A38]" />

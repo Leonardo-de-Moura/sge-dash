@@ -7,7 +7,7 @@ export interface CreateEventRequest {
   category: string;
   modality: string;
   startDate: string;
-  endDate?: string;
+  endDate: string;
   workload: string;
   location: string;
   totalSlots: number;
@@ -78,6 +78,8 @@ export const eventsApi = {
         modality: ev.modality,
         startDate: formattedStartDate,
         endDate: formattedEndDate,
+        startTime: `${String(start.getHours()).padStart(2, '0')}:${String(start.getMinutes()).padStart(2, '0')}`,
+        endTime: end ? `${String(end.getHours()).padStart(2, '0')}:${String(end.getMinutes()).padStart(2, '0')}` : undefined,
         dayMonth: ev.dayMonth || `${day} ${month}`,
         workload: ev.workload,
         location: ev.location,
@@ -105,6 +107,8 @@ export const eventsApi = {
       modality: ev.modality,
       startDate: `${day}/${String(start.getMonth() + 1).padStart(2, '0')}/${start.getFullYear()}`,
       endDate: end ? `${String(end.getDate()).padStart(2, '0')}/${String(end.getMonth() + 1).padStart(2, '0')}/${end.getFullYear()}` : undefined,
+      startTime: `${String(start.getHours()).padStart(2, '0')}:${String(start.getMinutes()).padStart(2, '0')}`,
+      endTime: end ? `${String(end.getHours()).padStart(2, '0')}:${String(end.getMinutes()).padStart(2, '0')}` : undefined,
       dayMonth: ev.dayMonth || `${day} ${month}`,
       workload: ev.workload,
       location: ev.location,

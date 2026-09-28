@@ -53,7 +53,9 @@ export const EventCard: React.FC<EventCardProps> = ({
           <div className="flex items-center gap-3 sm:gap-4 text-xs text-gray-500 flex-wrap">
             <span className="flex items-center gap-1">
               <Clock className="w-3.5 h-3.5 text-gray-400" />
-              {event.workload}
+              {event.startTime && event.endTime
+                ? `${event.startTime} às ${event.endTime} • ${event.workload}`
+                : event.workload}
             </span>
             <span className="flex items-center gap-1">
               <Users className="w-3.5 h-3.5 text-gray-400" />
