@@ -13,6 +13,7 @@ import { RegisterStudentPage } from './pages/auth/RegisterStudentPage';
 import { RegisterTeacherPage } from './pages/auth/RegisterTeacherPage';
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
 import { EmailSentPage } from './pages/auth/EmailSentPage';
+import { ResetPasswordPage } from './pages/auth/ResetPasswordPage';
 
 // Páginas do Aluno
 
@@ -43,12 +44,14 @@ export default function App() {
             <Route path="/" element={<SplashPage />} />
             <Route path="/bem-vindo" element={<LandingPage />} />
             <Route path="/definir-funcao" element={<RoleSelectionPage />} />
+            <Route path="/login" element={<Navigate to="/login/aluno" replace />} />
             <Route path="/login/aluno" element={<LoginStudentPage />} />
             <Route path="/login/professor" element={<LoginTeacherPage />} />
             <Route path="/cadastro/aluno" element={<RegisterStudentPage />} />
             <Route path="/cadastro/professor" element={<RegisterTeacherPage />} />
             <Route path="/recuperar-senha" element={<ForgotPasswordPage />} />
             <Route path="/email-enviado" element={<EmailSentPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
 
             {/* Módulo Aluno */}
           

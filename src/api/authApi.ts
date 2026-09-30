@@ -38,6 +38,12 @@ export interface RegisterTeacherRequest {
   confirmPassword: string;
 }
 
+export interface ResetPasswordRequest {
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export const authApi = {
   login: async (credentials: LoginRequest): Promise<LoginResponse> => {
     return apiRequest<LoginResponse>('/auth/login', {
@@ -68,6 +74,13 @@ export const authApi = {
     return apiRequest<void>('/auth/forgot-password', {
       method: 'POST',
       body: JSON.stringify({ email }),
+    });
+  },
+
+  resetPassword: async (token: string, newPassword: string, confirmPassword: string): Promise<void> => {
+    return apiRequest<void>('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ token, newPassword, confirmPassword }),
     });
   },
 

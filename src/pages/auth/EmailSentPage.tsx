@@ -42,7 +42,7 @@ export const EmailSentPage: React.FC = () => {
             variant="primary"
             size="md"
             fullWidth
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/login/aluno')}
           >
             Voltar para o login
           </Button>
