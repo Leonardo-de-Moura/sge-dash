@@ -21,12 +21,14 @@ import { StudentDashboardPage } from './pages/student/StudentDashboardPage';
 import { StudentEventsPage } from './pages/student/StudentEventsPage';
 import { StudentRegistrationsPage } from './pages/student/StudentRegistrationsPage';
 import { StudentCertificatesPage } from './pages/student/StudentCertificatesPage';
+import { StudentCheckInPage } from './pages/student/StudentCheckInPage';
 
 // Páginas do Professor
 import { TeacherDashboardPage } from './pages/teacher/TeacherDashboardPage';
 import { CreateEventPage } from './pages/teacher/CreateEventPage';
 import { AttendancePage } from './pages/teacher/AttendancePage';
 import { CertificatesPage } from './pages/teacher/CertificatesPage';
+import { TeacherQrCodePage } from './pages/teacher/TeacherQrCodePage';
 import { TeacherManagePage } from './pages/teacher/TeacherManagePage';
 
 // Páginas Gerais & Design System
@@ -60,6 +62,7 @@ export default function App() {
             <Route path="/aluno/eventos" element={<StudentEventsPage />} />
             <Route path="/aluno/inscricoes" element={<StudentRegistrationsPage />} />
             <Route path="/aluno/certificados" element={<StudentCertificatesPage />} />
+            <Route path="/aluno/check-in" element={<StudentCheckInPage />} />
             <Route path="/aluno/perfil" element={<ProfilePage />} />
             <Route path="/aluno/ajuda" element={<HelpPage />} />
 
@@ -68,6 +71,7 @@ export default function App() {
             <Route path="/professor/criar-evento" element={<CreateEventPage />} />
             <Route path="/professor/presencas" element={<AttendancePage />} />
             <Route path="/professor/certificados" element={<CertificatesPage />} />
+            <Route path="/professor/qrcode" element={<TeacherQrCodePage />} />
             <Route path="/professor/eventos" element={<TeacherManagePage />} />
             <Route path="/professor/gerenciar" element={<TeacherManagePage />} />
             <Route path="/professor/perfil" element={<ProfilePage />} />

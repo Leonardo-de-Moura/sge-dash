@@ -57,6 +57,15 @@ export interface Registration {
   ticketCode: string;
 }
 
+export interface EventQrCodeData {
+  eventId: string;
+  eventTitle: string;
+  token: string;
+  generatedAt: string;
+  expiresAt: string;
+  isActive: boolean;
+}
+
 export interface CertificateItem {
   id: string;
   eventId: string;

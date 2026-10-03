@@ -17,11 +17,12 @@ Interface web oficial do **Sistema de Gestão de Eventos (SGE)** do **IFCE Campu
 
 ## ⚙️ Variáveis de Ambiente
 
-Crie um arquivo `.env` baseado no `.env.example`:
+Em desenvolvimento, a variável é opcional: o Vite encaminha `/api` ao backend local
+em `http://localhost:5000`. Para usar outro endereço de API, configure:
 
 ```env
-# URL da API do Backend em execução
-VITE_API_BASE_URL=http://localhost:5000/api
+# URL base da API, incluindo /api
+VITE_API_BASE_URL=https://servidor-da-api.example/api
 ```
 
 ---
@@ -38,7 +39,11 @@ npm install
 npm run dev
 ```
 
-O aplicativo estará rodando em: `http://localhost:5173`
+O aplicativo estará rodando em: `http://localhost:3000`. As chamadas à API usam o proxy
+local do Vite para `http://localhost:5000`; em produção, configure `VITE_API_BASE_URL`
+ou disponibilize `/api` no mesmo host do frontend.
+
+O aluno precisa estar autenticado e inscrito no evento para confirmar presença.
 
 ### 3. Build de Produção
 ```bash

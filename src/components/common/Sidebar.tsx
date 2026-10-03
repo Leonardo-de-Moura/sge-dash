@@ -9,6 +9,7 @@ import {
   HelpCircle,
   FolderKanban,
   CheckSquare,
+  QrCode,
   LogOut,
   X,
 } from "lucide-react";
@@ -48,6 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
     { label: "Gerenciar", path: "/professor/gerenciar", icon: FolderKanban },
     { label: "Presenças", path: "/professor/presencas", icon: CheckSquare },
+    { label: "QR Code", path: "/professor/qrcode", icon: QrCode },
     { label: "Certificados", path: "/professor/certificados", icon: Award },
     { label: "Perfil", path: "/professor/perfil", icon: User },
     { label: "Ajuda", path: "/professor/ajuda", icon: HelpCircle },

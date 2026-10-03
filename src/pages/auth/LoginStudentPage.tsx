@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, GraduationCap, Eye, EyeOff, AlertCircle, ArrowLeft } from 'lucide-react';
 import { AuthLayout } from '../../components/layout/AuthLayout';
 import { Input } from '../../components/common/Input';
@@ -8,6 +8,7 @@ import { useAuth } from '../../context/AuthContext';
 
 export const LoginStudentPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { loginWithCredentials } = useAuth();
 
   const [email, setEmail] = useState('luzia@aluno.ifce.edu.br');
@@ -24,7 +25,8 @@ export const LoginStudentPage: React.FC = () => {
 
     try {
       await loginWithCredentials(email, password);
-      navigate('/aluno/inicio');
+      const returnTo = (location.state as { returnTo?: string } | null)?.returnTo;
+      navigate(returnTo || '/aluno/inicio', { replace: true });
     } catch (err: any) {
       console.error('Erro de login discente:', err);
       setErrorMessage(err.message || 'E-mail ou senha incorretos.');

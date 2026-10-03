@@ -1,6 +1,14 @@
 import { apiRequest } from './client';
 import { ParticipantAttendance } from '../types';
 
+export interface CheckInResult {
+  eventId: string;
+  eventTitle: string;
+  status: string;
+  checkedInAt: string;
+  alreadyRegistered: boolean;
+}
+
 export const attendanceApi = {
   getEventAttendance: async (eventId: string): Promise<ParticipantAttendance[]> => {
     return apiRequest<ParticipantAttendance[]>(`/attendance/event/${eventId}`);
@@ -23,6 +31,13 @@ export const attendanceApi = {
     return apiRequest<void>('/attendance/bulk', {
       method: 'POST',
       body: JSON.stringify({ eventId, attendances }),
+    });
+  },
+
+  checkInWithQrCode: async (token: string): Promise<CheckInResult> => {
+    return apiRequest<CheckInResult>('/attendance/check-in', {
+      method: 'POST',
+      body: JSON.stringify({ token }),
     });
   },
 };
