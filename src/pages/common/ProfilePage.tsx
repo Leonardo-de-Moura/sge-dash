@@ -1,8 +1,7 @@
 import React from 'react';
-import { User, Mail, Hash, Shield, Building } from 'lucide-react';
+import { Mail, Hash, Building } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { useAuth } from '../../context/AuthContext';
-import { Button } from '../../components/common/Button';
 
 export const ProfilePage: React.FC = () => {
   const { user, role } = useAuth();
@@ -48,11 +47,6 @@ export const ProfilePage: React.FC = () => {
           </div>
         </div>
 
-        <div className="pt-2">
-          <Button variant="outline" size="md">
-            Alterar Senha
-          </Button>
-        </div>
       </div>
     </DashboardLayout>
   );

@@ -10,15 +10,15 @@ export const HelpPage: React.FC = () => {
     },
     {
       q: 'Quando meu certificado estará disponível?',
-      a: 'Assim que o evento for concluído e a lista de presença for homologada pelo docente responsável, em até 5 dias úteis.'
+      a: 'Assim que o evento for concluído e a lista de presença for homologada pelo docente responsável.'
     },
     {
       q: 'Como utilizar o certificado para Atividades Complementares?',
-      a: 'Baixe o PDF no menu "Certificados" e submeta o código de verificação no sistema acadêmico Q-Acadêmico / SIGAA.'
+      a: 'Baixe o PDF no menu "Certificados".'
     },
     {
       q: 'Posso cancelar minha inscrição em um evento?',
-      a: 'Sim, você pode cancelar sua inscrição com até 2 horas de antecedência na aba "Minhas Inscrições" para liberar a vaga.'
+      a: 'Sim, você pode cancelar sua inscrição na aba "Minhas Inscrições" para liberar a vaga.'
     }
   ];
 

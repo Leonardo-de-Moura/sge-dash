@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { User, UserRole } from '../types';
-import { authApi, LoginResponse, UserProfile } from '../api/authApi';
+import { authApi, UserProfile } from '../api/authApi';
 
 interface AuthContextType {
   user: User | null;
@@ -10,7 +10,6 @@ interface AuthContextType {
   isLoading: boolean;
   setRole: (role: UserRole) => void;
   loginWithCredentials: (email: string, password: string) => Promise<User>;
-  login: (role: UserRole, customName?: string, customEmail?: string) => Promise<void>;
   logout: () => void;
   notificationsCount: number;
 }
@@ -71,7 +70,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => window.removeEventListener('sge_unauthorized', handleUnauthorized);
   }, []);
 
-  // Initialize session: restore profile or login automatically with seeded user
+  // Restore an existing session; do not authenticate without user-provided credentials.
   useEffect(() => {
     let isMounted = true;
 
@@ -90,37 +89,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             return;
           }
         } catch (e) {
-          console.warn('Sessão expirada ou inválida, tentando reautenticação...');
+          console.warn('Sessão expirada ou inválida.');
           localStorage.removeItem('sge_token');
+          localStorage.removeItem('sge_user');
+          if (isMounted) {
+            setToken(null);
+            setUser(null);
+          }
         }
       }
 
-      // If no valid session, auto-login with default seeded student account
-      try {
-        const savedRole = (localStorage.getItem('sge_role') as UserRole) || 'aluno';
-        const defaultEmail =
-          savedRole === 'professor'
-            ? 'ricardo.silva@ifce.edu.br'
-            : 'luzia@aluno.ifce.edu.br';
-        const res = await authApi.login({
-          email: defaultEmail,
-          password: '123456',
-        });
-        if (isMounted) {
-          localStorage.setItem('sge_token', res.token);
-          const mappedUser = mapProfileToUser(res.user);
-          setUser(mappedUser);
-          setToken(res.token);
-          setRoleState(mappedUser.role);
-          localStorage.setItem('sge_user', JSON.stringify(mappedUser));
-          localStorage.setItem('sge_role', mappedUser.role);
-        }
-      } catch (err) {
-        console.error('Erro ao autenticar usuário padrão:', err);
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
+      if (isMounted) {
+        setIsLoading(false);
       }
     }
 
@@ -143,25 +123,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return mappedUser;
   }, []);
 
-  const login = useCallback(async (newRole: UserRole, _customName?: string, customEmail?: string) => {
-    const emailToUse =
-      customEmail ||
-      (newRole === 'professor' ? 'ricardo.silva@ifce.edu.br' : 'luzia@aluno.ifce.edu.br');
-    await loginWithCredentials(emailToUse, '123456');
-  }, [loginWithCredentials]);
-
-  const setRole = useCallback(async (newRole: UserRole) => {
+  const setRole = useCallback((newRole: UserRole) => {
     setRoleState(newRole);
     localStorage.setItem('sge_role', newRole);
-    // Switch login account according to role to keep backend context valid
-    try {
-      const emailToUse =
-        newRole === 'professor' ? 'ricardo.silva@ifce.edu.br' : 'luzia@aluno.ifce.edu.br';
-      await loginWithCredentials(emailToUse, '123456');
-    } catch (e) {
-      console.warn('Erro ao alternar papel:', e);
-    }
-  }, [loginWithCredentials]);
+  }, []);
 
   const logout = useCallback(() => {
     setUser(null);
@@ -180,7 +145,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isLoading,
         setRole,
         loginWithCredentials,
-        login,
         logout,
         notificationsCount,
       }}
