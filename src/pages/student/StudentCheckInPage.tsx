@@ -1,31 +1,41 @@
-import React, { useState } from 'react';
-import { AlertCircle, CheckCircle2, Loader2, QrCode } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { AlertCircle, CheckCircle2, Loader2, Mail, QrCode, UserRound } from 'lucide-react';
 import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { ApiError } from '../../api/client';
 import { attendanceApi } from '../../api/attendanceApi';
 import { useAuth } from '../../context/AuthContext';
+import { Input } from '../../components/common/Input';
 
 export const StudentCheckInPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { isAuthenticated, isLoading, role, logout } = useAuth();
+  const { isAuthenticated, isLoading, role, user, logout } = useAuth();
   const token = searchParams.get('token')?.trim() ?? '';
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [eventTitle, setEventTitle] = useState('');
+  const [name, setName] = useState(user?.name ?? '');
+  const [email, setEmail] = useState(user?.email ?? '');
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const returnTo = `${location.pathname}${location.search}`;
 
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setEmail(user.email);
+    }
+  }, [user]);
+
   const handleCheckIn = async () => {
-    if (!token || isSubmitting) return;
+    if (!token || !name.trim() || !email.trim() || isSubmitting) return;
 
     setIsSubmitting(true);
     setErrorMessage('');
 
     try {
-      const result = await attendanceApi.checkInWithQrCode(token);
+      const result = await attendanceApi.checkInWithQrCode(token, name.trim(), email.trim());
       setEventTitle(result.eventTitle);
       setMessage(
         result.alreadyRegistered
@@ -104,20 +114,48 @@ export const StudentCheckInPage: React.FC = () => {
             }}
             className="mt-7 inline-flex w-full items-center justify-center rounded-xl bg-[#006A38] px-5 py-3 font-semibold text-white transition hover:bg-[#005030]"
           >
-            Trocar para uma conta de aluno
+            Entrar com uma conta de aluno
           </button>
         )}
 
         {!message && !isLoading && isAuthenticated && role === 'aluno' && token && (
-          <button
-            type="button"
-            onClick={handleCheckIn}
-            disabled={isSubmitting}
-            className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#006A38] px-5 py-3 font-semibold text-white transition hover:bg-[#005030] disabled:cursor-not-allowed disabled:opacity-60"
+          <form
+            className="mt-7 space-y-4 text-left"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void handleCheckIn();
+            }}
           >
-            {isSubmitting && <Loader2 className="h-5 w-5 animate-spin" />}
-            {isSubmitting ? 'Confirmando...' : 'Confirmar minha presença'}
-          </button>
+            <Input
+              label="Nome completo"
+              type="text"
+              autoComplete="name"
+              required
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              leftIcon={<UserRound className="h-4 w-4" />}
+            />
+            <Input
+              label="E-mail usado no login"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              leftIcon={<Mail className="h-4 w-4" />}
+            />
+            <p className="text-xs text-gray-500">
+              Informe os mesmos dados da sua conta. A presença só será confirmada para a conta autenticada e inscrita no evento.
+            </p>
+            <button
+              type="submit"
+              disabled={isSubmitting || !name.trim() || !email.trim()}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#006A38] px-5 py-3 font-semibold text-white transition hover:bg-[#005030] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isSubmitting && <Loader2 className="h-5 w-5 animate-spin" />}
+              {isSubmitting ? 'Confirmando...' : 'Confirmar minha presença'}
+            </button>
+          </form>
         )}
       </section>
     </main>

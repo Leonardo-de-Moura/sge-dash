@@ -34,10 +34,14 @@ export const attendanceApi = {
     });
   },
 
-  checkInWithQrCode: async (token: string): Promise<CheckInResult> => {
+  checkInWithQrCode: async (
+    token: string,
+    name: string,
+    email: string
+  ): Promise<CheckInResult> => {
     return apiRequest<CheckInResult>('/attendance/check-in', {
       method: 'POST',
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({ token, name, email }),
     });
   },
 };

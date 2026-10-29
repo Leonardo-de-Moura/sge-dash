@@ -23,7 +23,16 @@ em `http://localhost:5000`. Para usar outro endereço de API, configure:
 ```env
 # URL base da API, incluindo /api
 VITE_API_BASE_URL=https://servidor-da-api.example/api
+
+# Endereço público do frontend incluído nos QR Codes de presença.
+# Na rede local, use o IP LAN da máquina que executa o frontend.
+VITE_PUBLIC_APP_URL=http://192.168.0.5:3000
 ```
+
+Copie `.env.example` para `.env` e substitua o IP de exemplo pelo endereço da máquina
+visível aos celulares na mesma rede Wi-Fi. A página do frontend deve estar acessível
+nesse endereço e porta. Não use `localhost` ou `127.0.0.1` no QR Code: esses endereços
+apontam para o próprio celular.
 
 ---
 
@@ -49,4 +58,8 @@ O aluno precisa estar autenticado e inscrito no evento para confirmar presença.
 ```bash
 npm run build
 ```
-Os arquivos otimizados serão gerados no diretório `dist/`.
+Antes do build, configure `VITE_PUBLIC_APP_URL` com a URL real onde o frontend ficará
+publicado, por exemplo `https://sge.exemplo.edu.br`, e `VITE_API_BASE_URL` com a API
+acessível pelo navegador. As variáveis `VITE_*` são incorporadas ao build; alterá-las
+depois de gerar `dist/` não modifica os arquivos. Os arquivos otimizados serão gerados
+no diretório `dist/`.

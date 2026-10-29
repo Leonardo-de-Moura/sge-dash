@@ -18,9 +18,21 @@ export const TeacherQrCodePage: React.FC = () => {
   const selectedEvent = events.find((event) => event.id === selectedEventId) ?? null;
 
   const renderQrCode = useCallback(async (token: string) => {
-    const checkInUrl = new URL('/aluno/check-in', window.location.origin);
+    const configuredAppUrl = import.meta.env.VITE_PUBLIC_APP_URL?.trim();
+    const appUrl = new URL(configuredAppUrl || window.location.origin);
+
+    if (!['http:', 'https:'].includes(appUrl.protocol) ||
+      appUrl.hostname === 'localhost' ||
+      appUrl.hostname === '127.0.0.1' ||
+      appUrl.hostname === '::1') {
+      throw new Error(
+        'Configure VITE_PUBLIC_APP_URL com o endereço acessível do frontend antes de gerar o QR Code.'
+      );
+    }
+
+    const checkInUrl = new URL('/aluno/check-in', appUrl.origin);
     checkInUrl.searchParams.set('token', token);
-    const dataUrl = await QRCode.toDataURL(checkInUrl, {
+    const dataUrl = await QRCode.toDataURL(checkInUrl.toString(), {
       type: 'image/png',
       margin: 1,
       width: 320,
